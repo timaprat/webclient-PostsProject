@@ -1,0 +1,124 @@
+<section id="extended" style="margin: 2% ;background-color: aliceblue;">
+  <div class="container">
+    <div class="row">
+      <div class="col-2">
+        <h1>List of POSTS</h1>
+      </div>
+      <div class="col ml-2">
+        <a
+          (click)="logout()"
+          matTooltip=""
+          style="background-color: linen"
+          ><h3 style="cursor: pointer;">Logout</h3>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="container mb-2">
+    <div class="row">
+      <div class="col">
+        <button
+          (click)="addNew()"
+          mat-raised-button
+          matTooltip="Add new Post"
+          color="primary"
+          style="background-color: steelblue"
+        >
+          <mat-icon>add</mat-icon>New Post
+        </button>
+        <button
+          [disabled]="selected.length === 0"
+          class="ms-2"
+          (click)="export()"
+          mat-raised-button
+          matTooltip="Export Post to excel file"
+          color="primary"
+          style="background-color: blueviolet"
+        >
+          <mat-icon>cloud_download</mat-icon> Export
+        </button>
+      </div>
+      <div class="col">
+        <form class="d-flex justify-content-end" role="search">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Type to filter the body column"
+            (keyup)="filterPosts($event)"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row text-left">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12">
+          <ngx-datatable
+            #myTable
+            class="material"
+            [columnMode]="'flex'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [rowHeight]="'auto'"
+            [rows]="posts"
+            [loadingIndicator]="postsLoading"
+            [limit]="5"
+            [sorts]="[{ prop: 'title', dir: 'asc' }]"
+            [selected]="selected"
+            [selectionType]="SelectionType.checkbox"
+            [selectAllRowsOnPage]="false"
+            (select)="onSelect($event)"
+          >
+            <ngx-datatable-column
+              [width]="30"
+              [sortable]="false"
+              [canAutoResize]="false"
+              [draggable]="false"
+              [resizeable]="false"
+              [headerCheckboxable]="true"
+              [checkboxable]="true"
+            >
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Actions" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <a (click)="modify(row)"
+                  ><mat-icon matTooltip="Edit post">edit</mat-icon></a
+                >
+                <a class="ms-1" (click)="viewComments(row)"
+                  ><mat-icon matTooltip="View comments">comment</mat-icon></a
+                >
+
+                <a class="ms-1" (click)="confirmDeletion(row)"
+                  ><mat-icon matTooltip="Delete a post">delete</mat-icon></a
+                >
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="ID" prop="id" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.id }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="UserId" prop="userId" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.userId }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Title" prop="title" [flexGrow]="2">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.title }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Body" prop="body" [flexGrow]="4">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.body }}
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Extended Table Ends-->
